@@ -101,9 +101,9 @@ for i in range(1000):
     sp = np.fft.fft(y)
 
 
-    for angle in range(-90,90):
-        tf = (sp/2) * np.exp(1j * 2*np.pi*rx_lo*(np.sin(np.deg2rad(angle))*time_max))
-        tf = np.fft.ifft(tf)*2
+    for angle in range(-450,450):
+        tf = (sp/2) * np.exp(1j * 2*np.pi*rx_lo*(np.sin(np.deg2rad(angle/5))*time_max))
+        tf = np.fft.ifft(tf)*4
         Rx_total = tf + Rx_0
         if i == 0:
             plt.clf()
@@ -114,8 +114,8 @@ for i in range(1000):
             plt.xlim(0,800)
             plt.ylim(-2000,2000)
             plt.legend(['Somma Segnali', 'Antenna 1', 'Antenna 2', 'Antenna 2 (Traslata)'])
-            plt.pause(0.1)
-            time.sleep(0.1)
+            plt.pause(0.05)
+            time.sleep(0.05)
         Rx_total = dbm(Rx_total)
         dataFin.append(np.max(Rx_total))
 
@@ -123,9 +123,9 @@ for i in range(1000):
     xAxes = []
     teorico = []
 
-    for i in range(-90,90):
-        xAxes.append(i)
-        teorico.append(result[1][900 + i*5])
+    for i in range(-450,450):
+        xAxes.append(i/5)
+        teorico.append(result[1][900 + i])
 
     dataFinNorm = [float(z) - np.min(dataFin) for z in dataFin]
     norm =  [float(j)/max(dataFinNorm) for j in dataFinNorm]

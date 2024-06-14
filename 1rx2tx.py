@@ -5,7 +5,7 @@ import numpy as np
 from arrayfactor import af as af
 
 
-sfasamento_sistema = -3          #deg
+sfasamento_sistema = -6          #deg
 
 
 # Create radio
@@ -83,7 +83,7 @@ xAxes = []
 teorico = []
 
 for i in range(-450,450):
-    xAxes.append(i)
+    xAxes.append(i/5)
     teorico.append(result[1][900 + i])
 
 for angle in range(-450,450):
@@ -99,10 +99,10 @@ for angle in range(-450,450):
     sdr.tx([iq0, iq1])   # Send Tx data.
 
     mean = 0
-    for times in range(10):
+    for times in range(30):
         data = sdr.rx() 
         Rx_0=data[0]
-        mean += np.max(dbm(Rx_0))/10
+        mean += np.max(dbm(Rx_0))/30
         if times == 0:
             dataFinNotFiltered.append(np.max(dbm(Rx_0)))
 
@@ -115,6 +115,7 @@ norm1 = [(float(j)-np.min(dataFinNotFiltered))/np.max(dataFinNotFiltered-np.min(
 plt.plot(xAxes,norm1)
 plt.plot(xAxes,teorico)
 plt.plot(xAxes,norm)
+plt.legend(['Segnale ricevuto istantaneo', 'segnale teorico', 'Segnale mediato'])
 plt.show()
 
 
